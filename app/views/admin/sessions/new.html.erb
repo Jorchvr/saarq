@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <title>Login — SAARQ Backoffice</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <%= csrf_meta_tags %>
+  <%= stylesheet_link_tag :app %>
+</head>
+<body class="bg-olive-900 min-h-screen flex items-center justify-center font-sans antialiased px-4">
+
+  <div class="w-full max-w-sm">
+    <div class="text-center mb-8">
+      <div class="w-14 h-14 rounded-2xl bg-gold-500 flex items-center justify-center mx-auto mb-4 shadow-gold">
+        <svg class="w-7 h-7 text-white" fill="currentColor" viewBox="0 0 20 20">
+          <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"/>
+        </svg>
+      </div>
+      <h1 class="text-xl font-bold text-white tracking-tight">SAARQ</h1>
+      <p class="text-gold-300 text-sm mt-1">Acceso al backoffice</p>
+    </div>
+
+    <div class="bg-white rounded-2xl p-6 sm:p-8 shadow-card">
+      <% if alert %>
+        <div class="bg-blush-50 border border-blush-100 text-blush-600 rounded-xl px-4 py-3 text-sm mb-5 font-medium">
+          <%= alert %>
+        </div>
+      <% end %>
+
+      <%= form_with url: admin_login_path, method: :post, local: true do |f| %>
+        <div class="mb-5">
+          <label class="block text-xs font-semibold text-stone-500 uppercase tracking-wide mb-2">Contraseña</label>
+          <%= f.password_field :password,
+                class: "w-full border border-gold-200 rounded-xl px-4 py-3 text-sm text-olive-900 bg-gold-50/40 focus:outline-none focus:ring-2 focus:ring-gold-300 focus:border-transparent transition-all",
+                placeholder: "••••••••",
+                autofocus: true %>
+        </div>
+        <%= f.submit "Ingresar",
+              class: "w-full bg-gold-500 hover:bg-gold-600 text-white font-semibold py-3 rounded-xl cursor-pointer transition-all shadow-gold text-sm" %>
+      <% end %>
+    </div>
+
+    <p class="text-center mt-6">
+      <%= link_to "← Volver al sitio", root_path, class: "text-xs text-gold-400 hover:text-gold-200 transition-colors" %>
+    </p>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,101 @@
+<!-- Hero con imagen de fondo -->
+<div class="relative overflow-hidden" style="min-height: 640px;">
+  <div class="absolute inset-0 bg-cover" style="background-image: url('/images/hero.jpg'); background-position: center 65%;"></div>
+  <div class="absolute inset-0 bg-gradient-to-b from-black/50 via-black/30 to-black/60"></div>
+
+  <div class="relative max-w-4xl mx-auto px-6 pt-20 pb-40 text-center">
+    <p class="text-rose-300 text-xs font-bold tracking-widest uppercase mb-5">Bienes Raíces</p>
+    <h1 class="text-5xl md:text-6xl font-bold text-white mb-4 leading-tight tracking-tight drop-shadow-lg">
+      Encuentra tu<br>propiedad ideal
+    </h1>
+    <p class="text-white/70 text-lg font-light drop-shadow">Casas, departamentos, terrenos, locales y más en todo México.</p>
+  </div>
+</div>
+
+<!-- Barra de filtros flotante -->
+<div class="max-w-3xl mx-auto px-6 -mt-14 relative z-10 mb-14">
+  <%= form_with url: root_path, method: :get, local: true do |f| %>
+    <%= f.hidden_field :q, value: params[:q] %>
+    <div class="bg-white rounded-3xl shadow-2xl p-3 flex flex-col sm:flex-row gap-2">
+      <%= f.select :operacion,
+            [["Propiedades en Venta", "venta"], ["Propiedades en Renta", "renta"], ["Todas las propiedades", ""]],
+            { selected: params[:operacion].presence || "venta" },
+            class: "flex-1 bg-gray-50 border-0 rounded-2xl px-6 py-5 text-base text-gray-700 font-medium focus:outline-none focus:ring-2 focus:ring-cyan-300 cursor-pointer" %>
+
+      <%= f.select :tipo,
+            [["Tipo de propiedad", ""], ["Casa", "casa"], ["Departamento", "departamento"],
+             ["Terreno", "terreno"], ["Local", "local"], ["Bodega", "bodega"]],
+            { selected: params[:tipo] },
+            class: "flex-1 bg-gray-50 border-0 rounded-2xl px-6 py-5 text-base text-gray-700 font-medium focus:outline-none focus:ring-2 focus:ring-cyan-300 cursor-pointer" %>
+
+      <%= f.submit "Buscar propiedades",
+            class: "bg-olive-600 hover:bg-olive-500 active:bg-olive-700 text-white font-bold px-10 py-5 rounded-2xl cursor-pointer transition-all text-base whitespace-nowrap shadow-lg" %>
+    </div>
+  <% end %>
+</div>
+
+<!-- Grid de propiedades -->
+<div class="max-w-6xl mx-auto px-6 pb-16">
+  <div class="flex items-center justify-between mb-8">
+    <h2 class="text-2xl font-bold text-gray-600">Propiedades destacadas</h2>
+    <p class="text-sm text-gray-400"><%= @properties.count %> encontradas</p>
+  </div>
+
+  <% if @properties.any? %>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <% @properties.each do |property| %>
+        <%= link_to property_path(property), class: "bg-white rounded-3xl shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-200 group block" do %>
+
+          <!-- Imagen -->
+          <div class="h-52 bg-gray-100 relative overflow-hidden rounded-t-3xl">
+            <% if property.imagen_principal %>
+              <%= image_tag url_for(property.imagen_principal),
+                    class: "w-full h-full object-cover group-hover:scale-105 transition-transform duration-500",
+                    loading: "lazy",
+                    decoding: "async",
+                    alt: "" %>
+            <% else %>
+              <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200">
+                <svg class="w-14 h-14 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
+                </svg>
+              </div>
+            <% end %>
+            <div class="absolute top-3 left-3">
+              <span class="bg-gray-900/75 backdrop-blur-sm text-white text-xs font-bold px-3 py-1.5 rounded-full uppercase tracking-wider">
+                EN <%= property.tipo_operacion.upcase %>
+              </span>
+            </div>
+          </div>
+
+          <!-- Badge de precio FUERA del overflow-hidden -->
+          <div class="px-4 -mt-4 relative z-10">
+            <span class="bg-olive-600 text-white font-bold text-sm px-4 py-2 rounded-2xl shadow-lg inline-block">
+              <%= property.precio_formateado %>
+            </span>
+          </div>
+
+          <!-- Texto -->
+          <div class="px-4 pb-5 pt-2">
+            <p class="text-sm font-semibold text-gray-800 truncate">
+              <%= property.tipo_propiedad.capitalize %> en <%= property.colonia %>
+            </p>
+            <p class="text-xs text-gray-400 mt-0.5 truncate"><%= property.ciudad %>, <%= property.estado %></p>
+          </div>
+
+        <% end %>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="text-center py-24">
+      <div class="w-16 h-16 rounded-3xl bg-gray-100 flex items-center justify-center mx-auto mb-5">
+        <svg class="w-8 h-8 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+        </svg>
+      </div>
+      <p class="font-semibold text-gray-700 mb-1">Sin resultados</p>
+      <p class="text-sm text-gray-400 mb-6">No encontramos propiedades con esos filtros.</p>
+      <%= link_to "Ver todas", root_path, class: "text-sm font-bold text-olive-600 hover:underline" %>
+    </div>
+  <% end %>
+</div>

@@ -1,0 +1,159 @@
+<div class="flex items-center justify-between mb-6 sm:mb-8 gap-3 flex-wrap">
+  <div>
+    <h1 class="text-xl sm:text-2xl font-bold text-olive-900 tracking-tight">Propiedades</h1>
+    <p class="text-sm text-stone-400 mt-1"><%= @properties.count %> en total</p>
+  </div>
+  <div class="flex items-center gap-3 shrink-0">
+    <%= link_to rewatermark_all_admin_properties_path,
+          data: { turbo_method: :post, turbo_confirm: "¿Aplicar la marca de agua SAARQ a todas las propiedades?" },
+          class: "text-xs font-semibold text-stone-400 hover:text-gold-600 transition-colors hidden sm:inline" do %>
+      Marca de agua a todas
+    <% end %>
+    <%= link_to new_admin_property_path,
+          class: "bg-gold-500 hover:bg-gold-600 text-white text-xs sm:text-sm font-semibold px-4 sm:px-5 py-2.5 rounded-xl transition-all shadow-gold" do %>
+      <span class="hidden sm:inline">Nueva propiedad +</span>
+      <span class="sm:hidden">+ Nueva</span>
+    <% end %>
+  </div>
+</div>
+
+<% if @properties.any? %>
+
+  <%# Tarjetas en móvil %>
+  <div class="flex flex-col gap-3 md:hidden">
+    <% @properties.each do |property| %>
+      <div class="bg-white rounded-2xl shadow-card border border-gold-100 p-4">
+        <div class="flex items-start gap-3">
+          <div class="w-14 h-14 rounded-xl overflow-hidden flex-shrink-0 bg-gold-50">
+            <% if property.imagen_principal %>
+              <%= image_tag url_for(property.imagen_principal), class: "w-full h-full object-cover", alt: "" %>
+            <% else %>
+              <div class="w-full h-full flex items-center justify-center">
+                <svg class="w-6 h-6 text-gold-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                    d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
+                </svg>
+              </div>
+            <% end %>
+          </div>
+
+          <div class="flex-1 min-w-0">
+            <p class="text-xs text-stone-400 truncate"><%= property.colonia %>, <%= property.ciudad %></p>
+            <p class="font-semibold text-olive-900 text-sm truncate mt-0.5"><%= property.calle %></p>
+            <div class="flex items-center gap-2 mt-1.5 flex-wrap">
+              <span class="text-xs text-stone-500 capitalize"><%= property.tipo_propiedad %></span>
+              <span class="text-stone-200 text-xs">·</span>
+              <span class="text-xs capitalize <%= property.tipo_operacion == 'venta' ? 'text-olive-600' : 'text-stone-500' %> font-medium"><%= property.tipo_operacion %></span>
+              <span class="text-stone-200 text-xs">·</span>
+              <span class="text-xs font-semibold text-gold-700"><%= property.precio_formateado %></span>
+            </div>
+          </div>
+
+          <div class="shrink-0">
+            <% if property.activo? %>
+              <span class="inline-flex items-center gap-1 bg-olive-50 text-olive-600 text-xs font-semibold px-2 py-0.5 rounded-full">
+                <span class="w-1.5 h-1.5 rounded-full bg-olive-500"></span> Activa
+              </span>
+            <% else %>
+              <span class="inline-flex items-center gap-1 bg-stone-50 text-stone-400 text-xs font-semibold px-2 py-0.5 rounded-full">
+                <span class="w-1.5 h-1.5 rounded-full bg-stone-300"></span> Oculta
+              </span>
+            <% end %>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-end gap-4 mt-3 pt-3 border-t border-gold-50">
+          <%= link_to "Editar", edit_admin_property_path(property),
+                class: "text-xs font-semibold text-gold-600 hover:text-gold-800 transition-colors" %>
+          <%= button_to "Eliminar", admin_property_path(property), method: :delete,
+                data: { turbo_confirm: "¿Eliminar esta propiedad?" },
+                class: "text-xs font-semibold text-stone-300 hover:text-blush-500 bg-transparent border-0 cursor-pointer transition-colors" %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <%# Tabla en desktop %>
+  <div class="hidden md:block bg-white rounded-2xl shadow-card border border-gold-100 overflow-hidden">
+    <table class="w-full text-sm">
+      <thead>
+        <tr class="border-b border-gold-50">
+          <th class="text-left px-6 py-4 text-xs font-semibold text-stone-400 uppercase tracking-widest">Propiedad</th>
+          <th class="text-left px-6 py-4 text-xs font-semibold text-stone-400 uppercase tracking-widest">Tipo</th>
+          <th class="text-left px-6 py-4 text-xs font-semibold text-stone-400 uppercase tracking-widest">Precio</th>
+          <th class="text-left px-6 py-4 text-xs font-semibold text-stone-400 uppercase tracking-widest">Ubicación</th>
+          <th class="text-center px-6 py-4 text-xs font-semibold text-stone-400 uppercase tracking-widest">Estado</th>
+          <th class="px-6 py-4"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @properties.each do |property| %>
+          <tr class="border-b border-gold-50 last:border-0 hover:bg-gold-50/40 transition-colors">
+            <td class="px-6 py-4">
+              <div class="flex items-center gap-3">
+                <div class="w-11 h-11 rounded-xl overflow-hidden flex-shrink-0 bg-gold-50">
+                  <% if property.imagen_principal %>
+                    <%= image_tag url_for(property.imagen_principal), class: "w-full h-full object-cover", alt: "" %>
+                  <% else %>
+                    <div class="w-full h-full flex items-center justify-center">
+                      <svg class="w-5 h-5 text-gold-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                          d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
+                      </svg>
+                    </div>
+                  <% end %>
+                </div>
+                <div>
+                  <p class="text-xs text-stone-400"><%= property.colonia %></p>
+                  <p class="font-semibold text-olive-900 truncate max-w-48 mt-0.5"><%= property.calle %></p>
+                </div>
+              </div>
+            </td>
+            <td class="px-6 py-4">
+              <span class="capitalize text-stone-600 font-medium"><%= property.tipo_propiedad %></span>
+              <span class="mx-1 text-stone-200">·</span>
+              <span class="<%= property.tipo_operacion == 'venta' ? 'text-olive-600' : 'text-stone-500' %> font-medium capitalize"><%= property.tipo_operacion %></span>
+            </td>
+            <td class="px-6 py-4 font-semibold text-gold-700"><%= property.precio_formateado %></td>
+            <td class="px-6 py-4 text-stone-500 text-xs"><%= property.ciudad %>, <%= property.estado %></td>
+            <td class="px-6 py-4 text-center">
+              <% if property.activo? %>
+                <span class="inline-flex items-center gap-1 bg-olive-50 text-olive-600 text-xs font-semibold px-2.5 py-1 rounded-full">
+                  <span class="w-1.5 h-1.5 rounded-full bg-olive-500"></span> Activa
+                </span>
+              <% else %>
+                <span class="inline-flex items-center gap-1 bg-stone-50 text-stone-400 text-xs font-semibold px-2.5 py-1 rounded-full">
+                  <span class="w-1.5 h-1.5 rounded-full bg-stone-300"></span> Oculta
+                </span>
+              <% end %>
+            </td>
+            <td class="px-6 py-4">
+              <div class="flex items-center justify-end gap-4">
+                <%= link_to "Editar", edit_admin_property_path(property),
+                      class: "text-xs font-semibold text-gold-600 hover:text-gold-800 transition-colors" %>
+                <%= button_to "Eliminar", admin_property_path(property), method: :delete,
+                      data: { turbo_confirm: "¿Eliminar esta propiedad?" },
+                      class: "text-xs font-semibold text-stone-300 hover:text-blush-500 bg-transparent border-0 cursor-pointer transition-colors" %>
+              </div>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+
+<% else %>
+  <div class="bg-white rounded-2xl shadow-card border border-gold-100">
+    <div class="text-center py-20 px-6">
+      <div class="w-14 h-14 rounded-2xl bg-gold-50 flex items-center justify-center mx-auto mb-4">
+        <svg class="w-7 h-7 text-gold-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+            d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
+        </svg>
+      </div>
+      <p class="font-semibold text-olive-900 mb-1">Sin propiedades</p>
+      <p class="text-sm text-stone-400 mb-5">Agrega tu primera propiedad para verla en el sitio.</p>
+      <%= link_to "Agregar ahora", new_admin_property_path, class: "text-sm font-semibold text-gold-600 hover:underline" %>
+    </div>
+  </div>
+<% end %>

@@ -1,0 +1,120 @@
+<%= form_with model: [:admin, property], local: true, class: "space-y-6" do |f| %>
+  <% if property.errors.any? %>
+    <div class="bg-blush-50 border border-blush-100 rounded-xl p-4">
+      <p class="font-semibold text-blush-600 text-sm mb-2">Corrige estos errores:</p>
+      <ul class="list-disc list-inside text-blush-500 text-sm space-y-0.5">
+        <% property.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+
+    <div>
+      <label class="block text-xs font-semibold text-stone-400 uppercase tracking-wide mb-2">Precio (MXN) *</label>
+      <%= f.number_field :precio, value: property.precio, step: 1, placeholder: "Ej. 2500000",
+            class: "w-full border border-gold-200 rounded-xl px-4 py-3 text-sm text-olive-900 bg-gold-50/40 focus:outline-none focus:ring-2 focus:ring-gold-300 focus:bg-white transition-all" %>
+    </div>
+
+    <div>
+      <label class="block text-xs font-semibold text-stone-400 uppercase tracking-wide mb-2">Operación *</label>
+      <%= f.select :tipo_operacion, Property::TIPOS_OPERACION.map { |t| [t.capitalize, t] },
+            { include_blank: "Selecciona...", selected: property.tipo_operacion },
+            class: "w-full border border-gold-200 rounded-xl px-4 py-3 text-sm text-olive-900 bg-gold-50/40 focus:outline-none focus:ring-2 focus:ring-gold-300 focus:bg-white transition-all" %>
+    </div>
+
+    <div>
+      <label class="block text-xs font-semibold text-stone-400 uppercase tracking-wide mb-2">Tipo de propiedad *</label>
+      <%= f.select :tipo_propiedad, Property::TIPOS_PROPIEDAD.map { |t| [t.capitalize, t] },
+            { include_blank: "Selecciona...", selected: property.tipo_propiedad },
+            class: "w-full border border-gold-200 rounded-xl px-4 py-3 text-sm text-olive-900 bg-gold-50/40 focus:outline-none focus:ring-2 focus:ring-gold-300 focus:bg-white transition-all" %>
+    </div>
+
+    <div>
+      <label class="block text-xs font-semibold text-stone-400 uppercase tracking-wide mb-2">Estado *</label>
+      <%= f.select :estado, Property::ESTADOS_MX,
+            { include_blank: "Selecciona...", selected: property.estado },
+            class: "w-full border border-gold-200 rounded-xl px-4 py-3 text-sm text-olive-900 bg-gold-50/40 focus:outline-none focus:ring-2 focus:ring-gold-300 focus:bg-white transition-all" %>
+    </div>
+
+    <div>
+      <label class="block text-xs font-semibold text-stone-400 uppercase tracking-wide mb-2">Ciudad *</label>
+      <%= f.text_field :ciudad, placeholder: "Ej. Guadalajara",
+            class: "w-full border border-gold-200 rounded-xl px-4 py-3 text-sm text-olive-900 bg-gold-50/40 focus:outline-none focus:ring-2 focus:ring-gold-300 focus:bg-white transition-all" %>
+    </div>
+
+    <div>
+      <label class="block text-xs font-semibold text-stone-400 uppercase tracking-wide mb-2">Colonia *</label>
+      <%= f.text_field :colonia, placeholder: "Ej. Providencia",
+            class: "w-full border border-gold-200 rounded-xl px-4 py-3 text-sm text-olive-900 bg-gold-50/40 focus:outline-none focus:ring-2 focus:ring-gold-300 focus:bg-white transition-all" %>
+    </div>
+  </div>
+
+  <div>
+    <label class="block text-xs font-semibold text-stone-400 uppercase tracking-wide mb-2">Calle y número *</label>
+    <%= f.text_field :calle, placeholder: "Ej. Av. Vallarta 1234",
+          class: "w-full border border-gold-200 rounded-xl px-4 py-3 text-sm text-olive-900 bg-gold-50/40 focus:outline-none focus:ring-2 focus:ring-gold-300 focus:bg-white transition-all" %>
+  </div>
+
+  <div>
+    <label class="block text-xs font-semibold text-stone-400 uppercase tracking-wide mb-2">Descripción</label>
+    <%= f.text_area :descripcion, rows: 4,
+          placeholder: "Describe la propiedad: m², recámaras, baños, amenidades...",
+          class: "w-full border border-gold-200 rounded-xl px-4 py-3 text-sm text-olive-900 bg-gold-50/40 focus:outline-none focus:ring-2 focus:ring-gold-300 focus:bg-white transition-all resize-none" %>
+  </div>
+
+  <div>
+    <label class="block text-xs font-semibold text-stone-400 uppercase tracking-wide mb-2">Imágenes</label>
+    <div class="border-2 border-dashed border-gold-200 rounded-xl p-5 text-center hover:border-gold-400 transition-colors bg-gold-50/30">
+      <%= f.file_field :imagenes, multiple: true, accept: "image/*",
+            class: "w-full text-sm text-stone-500 file:mr-3 file:py-2 file:px-3 file:rounded-lg file:border-0 file:bg-gold-100 file:text-gold-700 file:font-semibold file:text-xs hover:file:bg-gold-200 cursor-pointer" %>
+      <p class="text-xs text-stone-400 mt-2">JPG, PNG o WebP · Múltiples archivos permitidos</p>
+    </div>
+
+    <% if property.imagenes.attached? %>
+      <div class="flex flex-wrap gap-3 mt-4">
+        <% property.imagenes.each do |img| %>
+          <div class="relative">
+            <%= image_tag url_for(img), class: "w-24 h-24 object-cover rounded-xl border border-gold-100", alt: "" %>
+            <%= link_to purge_imagen_admin_property_path(property, attachment_id: img.id),
+                  data: { turbo_method: :delete, turbo_confirm: "¿Eliminar esta imagen?" },
+                  class: "absolute -top-1.5 -right-1.5 bg-red-500 hover:bg-red-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold leading-none shadow" do %>
+              ✕
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+      <div class="flex items-center justify-between gap-4 mt-3 flex-wrap">
+        <p class="text-xs text-stone-400">Toca ✕ para eliminar una foto. Las nuevas se agregan a las existentes.</p>
+        <div class="flex items-center gap-4 shrink-0">
+          <% if property.persisted? %>
+            <%= link_to "Aplicar marca de agua",
+                  rewatermark_admin_property_path(property),
+                  data: { turbo_method: :post, turbo_confirm: "¿Aplicar la marca de agua SAARQ a todas las fotos de esta propiedad?" },
+                  class: "text-xs font-semibold text-gold-600 hover:text-gold-800 transition-colors" %>
+          <% end %>
+          <%= link_to "Eliminar todas",
+                purge_all_imagenes_admin_property_path(property),
+                data: { turbo_method: :delete, turbo_confirm: "¿Eliminar todas las fotos? Esta acción no se puede deshacer." },
+                class: "text-xs font-semibold text-red-500 hover:text-red-600 transition-colors" %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="flex items-center gap-3 py-1">
+    <%= f.check_box :activo, class: "w-4 h-4 rounded text-gold-500 border-gold-200 focus:ring-gold-300" %>
+    <div>
+      <label class="text-sm font-semibold text-olive-900">Publicar en el sitio</label>
+      <p class="text-xs text-stone-400">Los visitantes podrán ver esta propiedad</p>
+    </div>
+  </div>
+
+  <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-2 border-t border-gold-100">
+    <%= f.submit property.persisted? ? "Guardar cambios" : "Crear propiedad",
+          class: "bg-gold-500 hover:bg-gold-600 text-white font-semibold px-8 py-3 rounded-xl cursor-pointer transition-all shadow-gold text-sm text-center" %>
+    <%= link_to "Cancelar", admin_properties_path, class: "text-sm font-medium text-stone-400 hover:text-stone-600 transition-colors text-center py-3 sm:py-0" %>
+  </div>
+<% end %>

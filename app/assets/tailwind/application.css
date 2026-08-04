@@ -1,0 +1,81 @@
+@import "tailwindcss";
+
+@theme {
+  --color-olive-50:  #f5f6ee;
+  --color-olive-100: #e8ead4;
+  --color-olive-200: #d2d6aa;
+  --color-olive-300: #b8be7c;
+  --color-olive-400: #9ea757;
+  --color-olive-500: #7a8c42;
+  --color-olive-600: #606e33;
+  --color-olive-700: #4a552a;
+  --color-olive-800: #343c1e;
+  --color-olive-900: #1e2211;
+
+  --color-gold-50:  #fdf8ed;
+  --color-gold-100: #faefc6;
+  --color-gold-200: #f4da88;
+  --color-gold-300: #ecc048;
+  --color-gold-400: #d9a62e;
+  --color-gold-500: #c08a1a;
+  --color-gold-600: #a07014;
+  --color-gold-700: #7c540e;
+  --color-gold-800: #5a3c08;
+  --color-gold-900: #3a2604;
+
+  --color-blush-50:  #fdf2ef;
+  --color-blush-100: #faded8;
+  --color-blush-200: #f3b5a8;
+  --color-blush-300: #e88c7a;
+  --color-blush-400: #d46858;
+  --color-blush-500: #bc4848;
+  --color-blush-600: #9c3838;
+  --color-blush-700: #782a2a;
+  --color-blush-800: #541e1e;
+  --color-blush-900: #321010;
+
+  --font-sans: 'Inter', system-ui, sans-serif;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+/* Base */
+body {
+  color: #1c1c1a;
+  background-color: #f7f7f3;
+}
+
+/* Prose */
+.prose h2 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #1c1c1a;
+  margin-top: 2rem;
+  margin-bottom: 0.5rem;
+  letter-spacing: -0.01em;
+}
+.prose p  { color: #5a5a52; line-height: 1.8; margin-bottom: 1rem; font-size: 0.95rem; }
+.prose ul { list-style-type: disc; padding-left: 1.5rem; color: #5a5a52; margin-bottom: 1rem; font-size: 0.95rem; }
+.prose ul li { margin-bottom: 0.3rem; }
+.prose a  { color: #606e33; text-decoration: underline; }
+.prose strong { font-weight: 600; color: #1c1c1a; }
+
+/* Shadows */
+.shadow-btn {
+  box-shadow: 0 2px 8px 0 rgba(96, 110, 51, 0.22), 0 1px 2px 0 rgba(0,0,0,0.08);
+}
+.shadow-btn:hover {
+  box-shadow: 0 4px 16px 0 rgba(96, 110, 51, 0.28), 0 2px 4px 0 rgba(0,0,0,0.10);
+}
+.shadow-gold {
+  box-shadow: 0 2px 8px 0 rgba(192, 138, 26, 0.30), 0 1px 2px 0 rgba(0,0,0,0.08);
+}
+.shadow-gold:hover {
+  box-shadow: 0 4px 16px 0 rgba(192, 138, 26, 0.40), 0 2px 4px 0 rgba(0,0,0,0.10);
+}
+.shadow-card {
+  box-shadow: 0 1px 3px 0 rgba(0,0,0,0.06), 0 4px 16px 0 rgba(0,0,0,0.04);
+}
+.shadow-card:hover {
+  box-shadow: 0 4px 24px 0 rgba(0,0,0,0.10), 0 1px 4px 0 rgba(0,0,0,0.06);
+}

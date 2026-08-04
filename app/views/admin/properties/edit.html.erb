@@ -1,0 +1,8 @@
+<div class="mb-5 sm:mb-6">
+  <h1 class="text-xl sm:text-2xl font-bold text-olive-900 tracking-tight">Editar propiedad</h1>
+  <p class="text-stone-400 text-sm mt-1"><%= @property.calle %>, <%= @property.ciudad %></p>
+</div>
+
+<div class="bg-white rounded-2xl shadow-card border border-gold-100 p-5 sm:p-8">
+  <%= render "form", property: @property %>
+</div>

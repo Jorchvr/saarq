@@ -1,0 +1,60 @@
+<div class="max-w-2xl mx-auto px-6 py-14">
+  <%= link_to root_path, class: "inline-flex items-center gap-1.5 text-sm text-stone-400 hover:text-olive-700 transition-colors mb-8" do %>
+    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+    </svg>
+    Regresar
+  <% end %>
+
+  <div class="mb-10">
+    <p class="text-xs font-semibold text-olive-500 uppercase tracking-widest mb-3">Legal</p>
+    <h1 class="text-4xl font-bold text-olive-900 tracking-tight mb-2">Aviso de Privacidad</h1>
+    <p class="text-stone-400 text-sm">Última actualización: <%= Date.current.strftime("%d de %B de %Y") %></p>
+  </div>
+
+  <div class="bg-white rounded-2xl shadow-card border border-olive-100 p-8 prose">
+
+    <h2>1. Identidad del Responsable</h2>
+    <p>
+      <strong>InmoApp</strong>, con domicilio en [dirección], es responsable del tratamiento
+      de sus datos personales conforme a la Ley Federal de Protección de Datos Personales
+      en Posesión de los Particulares (LFPDPPP).
+    </p>
+
+    <h2>2. Datos Personales Recabados</h2>
+    <p>Para los fines señalados en este aviso, InmoApp podrá recabar:</p>
+    <ul>
+      <li>Nombre completo</li>
+      <li>Correo electrónico</li>
+      <li>Número de teléfono</li>
+      <li>Ciudad y estado de residencia</li>
+    </ul>
+
+    <h2>3. Finalidades del Tratamiento</h2>
+    <p>Sus datos personales serán utilizados para:</p>
+    <ul>
+      <li>Dar seguimiento a solicitudes de información sobre propiedades.</li>
+      <li>Enviar información sobre inmuebles disponibles (solo si usted lo solicita).</li>
+      <li>Cumplir con obligaciones legales aplicables.</li>
+    </ul>
+
+    <h2>4. Transferencia de Datos</h2>
+    <p>
+      InmoApp no comparte, vende ni transfiere sus datos personales a terceros sin su
+      consentimiento, salvo en los casos previstos por la ley.
+    </p>
+
+    <h2>5. Derechos ARCO</h2>
+    <p>
+      Usted tiene derecho a <strong>Acceder, Rectificar, Cancelar u Oponerse</strong> al
+      tratamiento de sus datos personales. Para ejercerlos, escríbanos a
+      <a href="mailto:privacidad@inmoapp.mx">privacidad@inmoapp.mx</a>.
+    </p>
+
+    <h2>6. Cambios al Aviso</h2>
+    <p>
+      Cualquier modificación será notificada mediante publicación en este sitio.
+    </p>
+
+  </div>
+</div>
